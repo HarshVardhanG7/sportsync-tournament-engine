@@ -4,6 +4,7 @@ import helmet from "helmet";
 import "./config/env.js";
 import { errorHandler } from "./middlewares/error-handler.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
+import { tournamentRoutes } from "./modules/tournaments/tournament.routes.js";
 import { AppError } from "./utils/app-error.js";
 
 export const app = express();
@@ -22,6 +23,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/tournaments", tournamentRoutes);
 
 app.use((_req, _res, next) => {
   next(new AppError("Route not found", 404));
