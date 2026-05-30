@@ -1,4 +1,12 @@
-import { CalendarDays, LayoutDashboard, ListOrdered, ShieldCheck, Trophy, Users } from "lucide-react";
+import {
+  CalendarDays,
+  GitBranch,
+  LayoutDashboard,
+  ListOrdered,
+  ShieldCheck,
+  Trophy,
+  Users,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const primaryNavItems = [
@@ -10,13 +18,14 @@ const tournamentScopedItems = [
   { label: "Teams", path: "teams", icon: Users, section: "teams" },
   { label: "Fixtures", path: "fixtures", icon: CalendarDays, section: "fixtures" },
   { label: "Standings", path: "standings", icon: ListOrdered, section: "standings" },
+  { label: "Playoffs", path: "playoffs", icon: GitBranch, section: "playoffs" },
 ];
-
-const tournamentPathPattern = /\/dashboard\/tournaments\/([^/]+)/;
 
 export function SidebarNavigation() {
   const location = useLocation();
-  const tournamentId = getSelectedTournamentId(location.pathname);
+  const pathname = location.pathname;
+  const match = pathname.match(/^\/dashboard\/tournaments\/([^/]+)/);
+  const selectedTournamentId = match?.[1];
 
   return (
     <aside className="hidden min-h-screen w-60 shrink-0 border-r border-slate-200 bg-white md:block xl:w-64">
@@ -33,7 +42,7 @@ export function SidebarNavigation() {
       <nav className="grid gap-1 px-3 py-4">
         {primaryNavItems.map((item) => {
           const Icon = item.icon;
-          const isActive = getActiveSection(location.pathname) === item.section;
+          const isActive = getActiveSection(pathname) === item.section;
 
           return (
             <Link
@@ -51,7 +60,7 @@ export function SidebarNavigation() {
           );
         })}
 
-        {tournamentId ? (
+        {selectedTournamentId ? (
           <div className="mt-4 border-t border-slate-100 pt-4">
             <p className="px-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
               Tournament Tools
@@ -59,12 +68,12 @@ export function SidebarNavigation() {
             <div className="mt-2 grid gap-1">
               {tournamentScopedItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = getActiveSection(location.pathname) === item.section;
+                const isActive = getActiveSection(pathname) === item.section;
 
                 return (
                   <Link
                     key={item.label}
-                    to={`/dashboard/tournaments/${tournamentId}/${item.path}`}
+                    to={`/dashboard/tournaments/${selectedTournamentId}/${item.path}`}
                     className={`flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition ${
                       isActive
                         ? "bg-emerald-50 text-emerald-700"
@@ -93,7 +102,7 @@ function getActiveSection(pathname: string) {
     return "teams";
   }
 
-  if (pathname.includes("/fixtures") || pathname.includes("/playoffs")) {
+  if (pathname.includes("/fixtures")) {
     return "fixtures";
   }
 
@@ -101,10 +110,9 @@ function getActiveSection(pathname: string) {
     return "standings";
   }
 
-  return "tournaments";
-}
+  if (pathname.includes("/playoffs")) {
+    return "playoffs";
+  }
 
-function getSelectedTournamentId(pathname: string) {
-  const match = pathname.match(tournamentPathPattern);
-  return match?.[1] ?? null;
+  return "tournaments";
 }
