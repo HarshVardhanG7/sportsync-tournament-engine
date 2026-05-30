@@ -23,3 +23,51 @@
     font: inherit;
   }
 }
+
+@layer utilities {
+  @keyframes auth-float-slow {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes auth-float-medium {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+
+    50% {
+      transform: translateY(-6px) translateX(3px);
+    }
+  }
+
+  @keyframes auth-float-fast {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .auth-float-slow {
+    animation: auth-float-slow 7s ease-in-out infinite;
+  }
+
+  .auth-float-medium {
+    animation: auth-float-medium 5.5s ease-in-out infinite;
+  }
+
+  .auth-float-fast {
+    animation: auth-float-fast 4.5s ease-in-out infinite;
+  }
+
+}

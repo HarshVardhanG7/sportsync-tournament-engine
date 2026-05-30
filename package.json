@@ -2,6 +2,7 @@
   "name": "sportsync-tournament-engine",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "pnpm --parallel --filter @sportsync/api --filter @sportsync/web dev",
@@ -10,6 +11,7 @@
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
+    "test": "pnpm --filter @sportsync/api test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:generate": "pnpm --filter @sportsync/api prisma:generate",

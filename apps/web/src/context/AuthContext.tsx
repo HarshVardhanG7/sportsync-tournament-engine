@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getApiErrorMessage, setAccessToken } from "../services/api";
+import { getApiErrorMessage, SESSION_EXPIRED_EVENT, setAccessToken } from "../services/api";
 import * as authService from "../services/auth";
 import type { AuthResponse, User } from "../types/auth";
 
@@ -89,6 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     void bootstrap();
   }, [accessToken, clearSession]);
+
+  useEffect(() => {
+    function handleSessionExpired() {
+      clearSession();
+    }
+
+    window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+  }, [clearSession]);
 
   const login = useCallback(
     async (payload: authService.LoginPayload) => {
