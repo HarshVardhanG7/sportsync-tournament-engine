@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   CalendarDays,
   CheckCircle2,
+  GitBranch,
   ListOrdered,
   Send,
   Trash2,
@@ -128,6 +129,13 @@ export function TournamentDetailsPage() {
                 >
                   <ListOrdered className="h-4 w-4" aria-hidden="true" />
                   Standings
+                </Link>
+                <Link
+                  to={`/dashboard/tournaments/${tournament.id}/playoffs`}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  <GitBranch className="h-4 w-4" aria-hidden="true" />
+                  Playoffs
                 </Link>
                 <Button
                   type="button"

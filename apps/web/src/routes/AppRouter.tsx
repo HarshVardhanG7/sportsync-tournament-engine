@@ -7,6 +7,7 @@ import { LoginPage } from "../pages/auth/LoginPage";
 import { RegisterPage } from "../pages/auth/RegisterPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { TournamentFixturesPage } from "../pages/fixtures/TournamentFixturesPage";
+import { TournamentPlayoffsPage } from "../pages/playoffs/TournamentPlayoffsPage";
 import { PublicTournamentDetailsPage } from "../pages/public/PublicTournamentDetailsPage";
 import { PublicTournamentsPage } from "../pages/public/PublicTournamentsPage";
 import { TournamentStandingsPage } from "../pages/standings/TournamentStandingsPage";
@@ -37,6 +38,7 @@ export function AppRouter() {
           <Route path="/dashboard/tournaments/:id/teams" element={<TournamentTeamsPage />} />
           <Route path="/dashboard/tournaments/:id/fixtures" element={<TournamentFixturesPage />} />
           <Route path="/dashboard/tournaments/:id/standings" element={<TournamentStandingsPage />} />
+          <Route path="/dashboard/tournaments/:id/playoffs" element={<TournamentPlayoffsPage />} />
           <Route path="/dashboard/teams/:teamId" element={<TeamDetailsPage />} />
         </Route>
       </Route>
