@@ -1,5 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, ArrowLeft, CheckCircle2, Send, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  CalendarDays,
+  CheckCircle2,
+  ListOrdered,
+  Send,
+  Trash2,
+  Users,
+} from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { getApiErrorMessage } from "../../services/api";
@@ -99,6 +108,27 @@ export function TournamentDetailsPage() {
                 ) : null}
               </div>
               <div className="flex flex-wrap gap-2">
+                <Link
+                  to={`/dashboard/tournaments/${tournament.id}/teams`}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  <Users className="h-4 w-4" aria-hidden="true" />
+                  Manage Teams
+                </Link>
+                <Link
+                  to={`/dashboard/tournaments/${tournament.id}/fixtures`}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  <CalendarDays className="h-4 w-4" aria-hidden="true" />
+                  Fixtures
+                </Link>
+                <Link
+                  to={`/dashboard/tournaments/${tournament.id}/standings`}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  <ListOrdered className="h-4 w-4" aria-hidden="true" />
+                  Standings
+                </Link>
                 <Button
                   type="button"
                   onClick={() => publishMutation.mutate()}

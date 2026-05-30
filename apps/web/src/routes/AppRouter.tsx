@@ -6,6 +6,10 @@ import { DashboardLayout } from "../layouts/DashboardLayout";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { RegisterPage } from "../pages/auth/RegisterPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
+import { TournamentFixturesPage } from "../pages/fixtures/TournamentFixturesPage";
+import { TournamentStandingsPage } from "../pages/standings/TournamentStandingsPage";
+import { TeamDetailsPage } from "../pages/teams/TeamDetailsPage";
+import { TournamentTeamsPage } from "../pages/teams/TournamentTeamsPage";
 import { CreateTournamentPage } from "../pages/tournaments/CreateTournamentPage";
 import { MyTournamentsPage } from "../pages/tournaments/MyTournamentsPage";
 import { TournamentDetailsPage } from "../pages/tournaments/TournamentDetailsPage";
@@ -26,6 +30,10 @@ export function AppRouter() {
           <Route path="/dashboard/tournaments" element={<MyTournamentsPage />} />
           <Route path="/dashboard/tournaments/new" element={<CreateTournamentPage />} />
           <Route path="/dashboard/tournaments/:id" element={<TournamentDetailsPage />} />
+          <Route path="/dashboard/tournaments/:id/teams" element={<TournamentTeamsPage />} />
+          <Route path="/dashboard/tournaments/:id/fixtures" element={<TournamentFixturesPage />} />
+          <Route path="/dashboard/tournaments/:id/standings" element={<TournamentStandingsPage />} />
+          <Route path="/dashboard/teams/:teamId" element={<TeamDetailsPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
