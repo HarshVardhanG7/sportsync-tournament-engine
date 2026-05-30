@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Tournaments", href: "/dashboard", icon: Trophy },
+  { label: "Tournaments", href: "/dashboard/tournaments", icon: Trophy },
   { label: "Teams", href: "/dashboard", icon: Users },
   { label: "Schedule", href: "/dashboard", icon: CalendarDays },
 ];
