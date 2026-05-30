@@ -62,10 +62,7 @@ export function SidebarNavigation() {
 
         {selectedTournamentId ? (
           <div className="mt-4 border-t border-slate-100 pt-4">
-            <p className="px-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
-              Tournament Tools
-            </p>
-            <div className="mt-2 grid gap-1">
+            <div className="grid gap-1">
               {tournamentScopedItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = getActiveSection(pathname) === item.section;
