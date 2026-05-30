@@ -12,6 +12,8 @@ const tournamentScopedItems = [
   { label: "Standings", path: "standings", icon: ListOrdered, section: "standings" },
 ];
 
+const tournamentPathPattern = /\/dashboard\/tournaments\/([^/]+)/;
+
 export function SidebarNavigation() {
   const location = useLocation();
   const tournamentId = getSelectedTournamentId(location.pathname);
@@ -103,12 +105,6 @@ function getActiveSection(pathname: string) {
 }
 
 function getSelectedTournamentId(pathname: string) {
-  const match = pathname.match(/^\/dashboard\/tournaments\/([^/]+)/);
-  const tournamentId = match?.[1];
-
-  if (!tournamentId || tournamentId === "new") {
-    return null;
-  }
-
-  return tournamentId;
+  const match = pathname.match(tournamentPathPattern);
+  return match?.[1] ?? null;
 }
