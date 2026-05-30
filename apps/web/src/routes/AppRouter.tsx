@@ -7,6 +7,8 @@ import { LoginPage } from "../pages/auth/LoginPage";
 import { RegisterPage } from "../pages/auth/RegisterPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { TournamentFixturesPage } from "../pages/fixtures/TournamentFixturesPage";
+import { PublicTournamentDetailsPage } from "../pages/public/PublicTournamentDetailsPage";
+import { PublicTournamentsPage } from "../pages/public/PublicTournamentsPage";
 import { TournamentStandingsPage } from "../pages/standings/TournamentStandingsPage";
 import { TeamDetailsPage } from "../pages/teams/TeamDetailsPage";
 import { TournamentTeamsPage } from "../pages/teams/TournamentTeamsPage";
@@ -18,6 +20,8 @@ export function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/tournaments" element={<PublicTournamentsPage />} />
+      <Route path="/tournaments/:slug" element={<PublicTournamentDetailsPage />} />
       <Route element={<PublicRoute />}>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
