@@ -8,6 +8,7 @@ import { fixtureRoutes } from "./modules/fixtures/fixture.routes.js";
 import { matchRoutes, tournamentMatchRoutes } from "./modules/matches/match.routes.js";
 import { playerRoutes, teamPlayerRoutes } from "./modules/players/player.routes.js";
 import { qualificationRoutes } from "./modules/qualifications/qualification.routes.js";
+import { publicRoutes } from "./modules/public/public.routes.js";
 import { standingRoutes } from "./modules/standings/standing.routes.js";
 import { teamRoutes, tournamentTeamRoutes } from "./modules/teams/team.routes.js";
 import { tournamentRoutes } from "./modules/tournaments/tournament.routes.js";
@@ -29,6 +30,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/public", publicRoutes);
 app.use("/api/v1/tournaments", tournamentRoutes);
 app.use("/api/v1/tournaments", tournamentTeamRoutes);
 app.use("/api/v1/tournaments", fixtureRoutes);
