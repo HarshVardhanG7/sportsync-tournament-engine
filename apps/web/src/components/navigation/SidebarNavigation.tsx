@@ -1,29 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, LayoutDashboard, ListOrdered, ShieldCheck, Trophy, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { getMyTournaments } from "../../services/tournaments";
+
+const primaryNavItems = [
+  { label: "Overview", href: "/dashboard", icon: LayoutDashboard, section: "overview" },
+  { label: "Tournaments", href: "/dashboard/tournaments", icon: Trophy, section: "tournaments" },
+];
+
+const tournamentScopedItems = [
+  { label: "Teams", icon: Users },
+  { label: "Fixtures", icon: CalendarDays },
+  { label: "Standings", icon: ListOrdered },
+];
 
 export function SidebarNavigation() {
   const location = useLocation();
-  const tournamentsQuery = useQuery({
-    queryKey: ["tournaments", "my"],
-    queryFn: getMyTournaments,
-  });
-  const currentTournamentId = getTournamentIdFromPath(location.pathname);
-  const fallbackTournamentId = tournamentsQuery.data?.[0]?.id;
-  const navigationTournamentId = currentTournamentId ?? fallbackTournamentId;
-  const tournamentScopedHref = (section: "teams" | "fixtures" | "standings") =>
-    navigationTournamentId
-      ? `/dashboard/tournaments/${navigationTournamentId}/${section}`
-      : "/dashboard/tournaments";
-
-  const navItems = [
-    { label: "Overview", href: "/dashboard", icon: LayoutDashboard, section: "overview" },
-    { label: "Tournaments", href: "/dashboard/tournaments", icon: Trophy, section: "tournaments" },
-    { label: "Teams", href: tournamentScopedHref("teams"), icon: Users, section: "teams" },
-    { label: "Fixtures", href: tournamentScopedHref("fixtures"), icon: CalendarDays, section: "fixtures" },
-    { label: "Standings", href: tournamentScopedHref("standings"), icon: ListOrdered, section: "standings" },
-  ];
 
   return (
     <aside className="hidden min-h-screen w-60 shrink-0 border-r border-slate-200 bg-white md:block xl:w-64">
@@ -37,7 +27,7 @@ export function SidebarNavigation() {
         </div>
       </div>
       <nav className="grid gap-1 px-3 py-4">
-        {navItems.map((item) => {
+        {primaryNavItems.map((item) => {
           const Icon = item.icon;
           const isActive = getActiveSection(location.pathname) === item.section;
 
@@ -56,6 +46,31 @@ export function SidebarNavigation() {
             </Link>
           );
         })}
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          <p className="px-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+            Tournament Tools
+          </p>
+          <div className="mt-2 grid gap-1">
+            {tournamentScopedItems.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.label}
+                  title="Select a tournament first"
+                  aria-disabled="true"
+                  className="flex min-h-10 cursor-not-allowed items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-400"
+                >
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  <div>
+                    <p>{item.label}</p>
+                    <p className="text-xs font-normal text-slate-400">Select a tournament first</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </nav>
     </aside>
   );
@@ -66,28 +81,5 @@ function getActiveSection(pathname: string) {
     return "overview";
   }
 
-  if (pathname.includes("/teams")) {
-    return "teams";
-  }
-
-  if (pathname.includes("/fixtures") || pathname.includes("/playoffs")) {
-    return "fixtures";
-  }
-
-  if (pathname.includes("/standings")) {
-    return "standings";
-  }
-
   return "tournaments";
-}
-
-function getTournamentIdFromPath(pathname: string) {
-  const match = pathname.match(/^\/dashboard\/tournaments\/([^/]+)/);
-  const tournamentId = match?.[1];
-
-  if (!tournamentId || tournamentId === "new") {
-    return null;
-  }
-
-  return tournamentId;
 }
