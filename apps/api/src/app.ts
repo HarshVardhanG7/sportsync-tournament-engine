@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import "./config/env.js";
+import { setupSwagger } from "./docs/swagger.js";
 import { errorHandler } from "./middlewares/error-handler.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { fixtureRoutes } from "./modules/fixtures/fixture.routes.js";
@@ -19,6 +20,7 @@ export const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+setupSwagger(app);
 
 app.get("/health", (_req, res) => {
   res.json({
