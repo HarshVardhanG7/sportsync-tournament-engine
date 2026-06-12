@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, LogIn } from "lucide-react";
+import { AlertCircle, LogIn, Trophy } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -80,6 +80,14 @@ export function LoginPage() {
           {form.formState.isSubmitting ? "Logging in..." : "Log in"}
         </Button>
       </form>
+
+      <Link
+        className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        to="/tournaments"
+      >
+        <Trophy className="h-4 w-4" aria-hidden="true" />
+        View tournaments
+      </Link>
 
       <p className="mt-6 text-center text-sm text-slate-600">
         New to SportSync?{" "}

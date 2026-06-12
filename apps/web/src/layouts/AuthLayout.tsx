@@ -58,13 +58,16 @@ function CommandCenterPreview() {
       <div className="auth-float-slow rounded-2xl border border-white/10 bg-white/[0.08] p-5 shadow-2xl shadow-emerald-950/30 backdrop-blur-xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-emerald-200">Live Tournament Command Center</p>
+            <p className="text-sm font-semibold text-emerald-200">Sample Tournament Command Center</p>
             <p className="mt-1 text-xs text-slate-400">SNIST Cricket Championship</p>
           </div>
           <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
-            Published
+            Demo data
           </span>
         </div>
+        <p className="mt-3 text-xs leading-5 text-slate-400">
+          Illustrative preview only. These teams, fixtures, and standings are not from a live account.
+        </p>
 
         <div className="mt-5 grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
           <PreviewCard className="auth-float-medium">
@@ -102,7 +105,7 @@ function CommandCenterPreview() {
             <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
               Points Table
             </p>
-            <span className="text-xs font-semibold text-emerald-200">Live</span>
+            <span className="text-xs font-semibold text-emerald-200">Sample</span>
           </div>
           <div className="mt-3 grid gap-2">
             {standingsPreview.map((standing) => (
