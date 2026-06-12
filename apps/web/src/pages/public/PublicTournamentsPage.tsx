@@ -3,6 +3,7 @@ import { AlertCircle, ArrowRight, ChevronLeft, ChevronRight, Search, Trophy } fr
 import { useMemo, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
+import { useAuth } from "../../context/AuthContext";
 import { getApiErrorMessage } from "../../services/api";
 import { getPublicTournament, getPublicTournaments } from "../../services/public-tournaments";
 import type { PublicTournamentDetails } from "../../types/public-tournament";
@@ -11,6 +12,7 @@ import { formatDate, formatFormat, StatusBadge } from "../tournaments/tournament
 const PAGE_SIZE = 9;
 
 export function PublicTournamentsPage() {
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState("");
   const [submittedSearch, setSubmittedSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -73,15 +75,21 @@ export function PublicTournamentsPage() {
             SPORTSYNC
           </Link>
           <nav className="flex items-center gap-3">
-            <Link className="text-sm font-medium text-slate-600 hover:text-slate-950" to="/login">
-              Login
-            </Link>
-            <Link
-              className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800"
-              to="/dashboard"
-            >
-              Dashboard
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800"
+                to="/dashboard"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800"
+                to="/login"
+              >
+                Login
+              </Link>
+            )}
           </nav>
         </div>
       </header>

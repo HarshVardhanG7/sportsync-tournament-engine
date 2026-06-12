@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, ArrowLeft, CalendarDays, Medal, Table2, Trophy, Users } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { getApiErrorMessage } from "../../services/api";
 import {
   getPublicTournament,
@@ -13,6 +14,7 @@ import { formatDate, formatFormat, StatusBadge } from "../tournaments/tournament
 
 export function PublicTournamentDetailsPage() {
   const { slug } = useParams<{ slug: string }>();
+  const { isAuthenticated } = useAuth();
 
   const tournamentQuery = useQuery({
     queryKey: ["public-tournament", slug],
@@ -55,9 +57,9 @@ export function PublicTournamentDetailsPage() {
             </Link>
             <Link
               className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800"
-              to="/login"
+              to={isAuthenticated ? "/dashboard" : "/login"}
             >
-              Login
+              {isAuthenticated ? "Dashboard" : "Login"}
             </Link>
           </nav>
         </div>
