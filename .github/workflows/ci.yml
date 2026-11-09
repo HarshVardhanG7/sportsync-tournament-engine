@@ -170,7 +170,7 @@ jobs:
           labels: ${{ steps.web-meta.outputs.labels }}
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
-    deploy-to-minikube:
+  deploy-to-minikube:
     name: Deploy to Minikube
     needs: build-and-push
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
