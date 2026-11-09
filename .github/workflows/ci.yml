@@ -80,3 +80,94 @@ jobs:
 
       - name: Build application
         run: pnpm build
+  
+  build-and-push:
+    name: Build and Push Docker Images
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Detect changed files
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          base: ${{ github.event.before }}
+          filters: |
+            api:
+              - 'apps/api/**'
+              - 'Dockerfile.api'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'tsconfig.base.json'
+              - '.dockerignore'
+
+            web:
+              - 'apps/web/**'
+              - 'Dockerfile.web'
+              - 'nginx/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'tsconfig.base.json'
+              - '.dockerignore'
+
+      - name: Set up Docker Buildx
+        if: steps.filter.outputs.api == 'true' || steps.filter.outputs.web == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        if: steps.filter.outputs.api == 'true' || steps.filter.outputs.web == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Generate API image tags
+        if: steps.filter.outputs.api == 'true'
+        id: api-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: harshvardhang7/sportsync-api
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push API image
+        if: steps.filter.outputs.api == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.api
+          push: true
+          tags: ${{ steps.api-meta.outputs.tags }}
+          labels: ${{ steps.api-meta.outputs.labels }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
+
+      - name: Generate Web image tags
+        if: steps.filter.outputs.web == 'true'
+        id: web-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: harshvardhang7/sportsync-web
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push Web image
+        if: steps.filter.outputs.web == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.web
+          push: true
+          tags: ${{ steps.web-meta.outputs.tags }}
+          labels: ${{ steps.web-meta.outputs.labels }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
+
