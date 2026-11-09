@@ -170,4 +170,38 @@ jobs:
           labels: ${{ steps.web-meta.outputs.labels }}
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
+    deploy-to-minikube:
+    name: Deploy to Minikube
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, Windows, X64]
 
+    steps:
+      - name: Verify Kubernetes connection
+        shell: pwsh
+        run: |
+          $context = kubectl config current-context
+
+          if ($context -ne "minikube") {
+            throw "Expected Minikube context, but found: $context"
+          }
+
+          kubectl get nodes
+
+      - name: Deploy API image
+        shell: pwsh
+        run: |
+          kubectl set image deployment/api api=harshvardhang7/sportsync-api:sha-${{ github.sha }} -n sportsync
+          kubectl rollout status deployment/api -n sportsync --timeout=180s
+
+      - name: Deploy Web image
+        shell: pwsh
+        run: |
+          kubectl set image deployment/web web=harshvardhang7/sportsync-web:sha-${{ github.sha }} -n sportsync
+          kubectl rollout status deployment/web -n sportsync --timeout=180s
+
+      - name: Verify deployments
+        shell: pwsh
+        run: |
+          kubectl get deployments -n sportsync
+          kubectl get pods -n sportsync -o wide
