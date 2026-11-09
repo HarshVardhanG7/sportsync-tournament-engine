@@ -178,7 +178,7 @@ jobs:
 
     steps:
       - name: Verify Kubernetes connection
-        shell: pwsh
+        shell: powershell
         run: |
           $context = kubectl config current-context
 
@@ -189,19 +189,19 @@ jobs:
           kubectl get nodes
 
       - name: Deploy API image
-        shell: pwsh
+        shell: powershell
         run: |
           kubectl set image deployment/api api=harshvardhang7/sportsync-api:sha-${{ github.sha }} -n sportsync
           kubectl rollout status deployment/api -n sportsync --timeout=180s
 
       - name: Deploy Web image
-        shell: pwsh
+        shell: powershell
         run: |
           kubectl set image deployment/web web=harshvardhang7/sportsync-web:sha-${{ github.sha }} -n sportsync
           kubectl rollout status deployment/web -n sportsync --timeout=180s
 
       - name: Verify deployments
-        shell: pwsh
+        shell: powershell
         run: |
           kubectl get deployments -n sportsync
           kubectl get pods -n sportsync -o wide
