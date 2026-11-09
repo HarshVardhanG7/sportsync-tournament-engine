@@ -13,4 +13,3 @@ coverage/
 *.tsbuildinfo
 .DS_Store
 
-apps/api/prisma/migrations/
