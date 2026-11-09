@@ -84,6 +84,9 @@ jobs:
   build-and-push:
     name: Build and Push Docker Images
     needs: build-and-test
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      web: ${{ steps.filter.outputs.web }}
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
@@ -99,6 +102,7 @@ jobs:
           filters: |
             api:
               - 'apps/api/**'
+              - 'packages/**'
               - 'Dockerfile.api'
               - 'package.json'
               - 'pnpm-lock.yaml'
@@ -108,6 +112,7 @@ jobs:
 
             web:
               - 'apps/web/**'
+              - 'packages/**'
               - 'Dockerfile.web'
               - 'nginx/**'
               - 'package.json'
@@ -173,7 +178,11 @@ jobs:
   deploy-to-minikube:
     name: Deploy to Minikube
     needs: build-and-push
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      (needs.build-and-push.outputs.api == 'true' ||
+       needs.build-and-push.outputs.web == 'true')
     runs-on: [self-hosted, Windows, X64]
 
     steps:
@@ -189,12 +198,14 @@ jobs:
           kubectl get nodes
 
       - name: Deploy API image
+        if: needs.build-and-push.outputs.api == 'true'
         shell: powershell
         run: |
           kubectl set image deployment/api api=harshvardhang7/sportsync-api:sha-${{ github.sha }} -n sportsync
           kubectl rollout status deployment/api -n sportsync --timeout=180s
 
       - name: Deploy Web image
+        if: needs.build-and-push.outputs.web == 'true'
         shell: powershell
         run: |
           kubectl set image deployment/web web=harshvardhang7/sportsync-web:sha-${{ github.sha }} -n sportsync
