@@ -40,7 +40,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://sportsync:sportsync@localhost:5432/sportsync?schema=public
-      JWT_ACCESS_TOKEN_SECRET: ci-only-test-secret-not-for-production
+      JWT_ACCESS_TOKEN_SECRET: ${{ secrets.JWT_ACCESS_TOKEN_SECRET }}
       JWT_ACCESS_TOKEN_EXPIRES_IN: 15m
       BCRYPT_SALT_ROUNDS: 12
       API_PORT: 4000
